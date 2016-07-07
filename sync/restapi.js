@@ -181,12 +181,6 @@ function Sync(method, model, opts) {
 		params.contentType = params.headers['Content-Type'] = 'application/json';
 	}
 
-	if(model.config.urlParams){
-		if (!model[model.idAttribute]) {
-			params.url = encodeData(model.config.urlParams, params.url);
-		}
-	}
-
 	logger(DEBUG, "REST METHOD", method);
 
 	switch (method) {
