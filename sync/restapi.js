@@ -181,6 +181,10 @@ function Sync(method, model, opts) {
 		params.contentType = params.headers['Content-Type'] = 'application/json';
 	}
 
+	if(model.config.urlParams){
+		params.url = encodeData(model.config.urlParams, params.url);
+	}
+
 	logger(DEBUG, "REST METHOD", method);
 
 	switch (method) {
@@ -214,6 +218,7 @@ function Sync(method, model, opts) {
 			break;
 
 		case 'read':
+			console.log('here happens stuff');
 			if (model[model.idAttribute]) {
 				params.url = params.url + '/' + model[model.idAttribute];
 			}
