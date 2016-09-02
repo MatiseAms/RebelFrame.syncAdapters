@@ -34,7 +34,9 @@ function apiCall(_options, _callback) {
 			_options.data = JSON.stringify(data);
 		} else {
 			_options.data = _options.data || {};
-			_options.data.access_token = Acl.cloudAccessToken;
+			if(!_options.headers.Authorization){
+				_options.data.access_token = Acl.cloudAccessToken;
+			}
 		}
 
 		if (_options.type == 'GET') {
@@ -95,6 +97,7 @@ function apiCall(_options, _callback) {
 			xhr.setRequestHeader(header, _options.headers[header]);
 		}
 
+
 		//
 		if (_options.modifiedSince) {
 			Ti.API.info('If-Modified-Since ' + _options.modifiedSince.toISOString());
@@ -141,6 +144,10 @@ function Sync(method, model, opts) {
 		for (var header in model.config.headers) {
 			params.headers[header] = model.config.headers[header];
 		}
+	}
+	if(model.config.hasOwnProperty('bearerAuthorization')){
+		// xhr.setRequestHeader('Authorization', 'Bearer ' + Acl.cloudAccessToken);
+		params.headers['Authorization'] = 'Bearer ' + Acl.cloudAccessToken;
 	}
 
 	// We need to ensure that we have a base url.
